@@ -212,7 +212,7 @@ SETTINGS
   settings = <<SETTINGS
     {
       "wmfVersion": "latest",
-      "modulesUrl": "https://github.com/microsoft/WhatTheHack/raw/master/037-AzureVirtualDesktop/Student/Resources/dsc/ActiveDirectoryReplica.zip",
+      "modulesUrl": "https://github.com/luke-taylor/terraform-adds/raw/main/dsc/ActiveDirectoryReplica.zip",
       "configurationFunction": "ActiveDirectoryReplica.ps1\\ActiveDirectoryReplica",
       "properties": {
         "Domain": "${local.domain}",
