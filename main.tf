@@ -202,26 +202,32 @@ resource "azurerm_virtual_machine_extension" "example_dc_02" {
   depends_on = [azurerm_virtual_machine_extension.example_dc_01]
 
   protected_settings = <<SETTINGS
-    {
-      "Items": {
-        "VmPassword": "${var.vm_password}"
+  {
+    "configurationArguments": {
+      "safemodeAdminCreds": {
+        "UserName": "${var.vm_username}",
+        "Password": "${var.vm_password}"
+      },
+      "adminCreds": {
+        "UserName": "${var.vm_username}",
+        "Password": "${var.vm_password}"
       }
     }
+  }
 SETTINGS
 
   settings = <<SETTINGS
-    {
-      "wmfVersion": "latest",
-      "modulesUrl": "https://github.com/luke-taylor/terraform-adds/raw/main/dsc/ActiveDirectoryReplica.zip",
-      "configurationFunction": "ActiveDirectoryReplica.ps1\\ActiveDirectoryReplica",
-      "properties": {
-        "Domain": "${local.domain}",
-        "DomainCreds": {
-          "UserName": "${var.vm_username}",
-          "Password": "PrivateSettingsRef:VmPassword"
-        }
-      }
+  {
+    "configuration": {
+      "WMFVersion": "latest",
+      "url": "https://github.com/luke-taylor/terraform-adds/raw/main/dsc/promote-adds.zip",
+      "script": "promote-adds.ps1",
+      "function": "CreateADReplicaDC"
+    },
+    "configurationArguments": {
+      "DomainName": "${local.domain}"
     }
+  }
 SETTINGS
 }
 
